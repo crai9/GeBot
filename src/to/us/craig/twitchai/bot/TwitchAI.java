@@ -15,6 +15,7 @@ import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 
 import to.us.craig.twitchai.util.FileUtils;
+import to.us.craig.twitchai.util.PcUtils;
 
 public class TwitchAI extends PircBot
 {
@@ -781,7 +782,7 @@ public class TwitchAI extends PircBot
 
                     logMsg("At this point the user would be asking for pc of " + pcMessage + "...");
 
-                    sendTwitchMessage(channel, "The price of " + pcMessage + " is: " + Math.random() * 100 + ".");
+                    sendTwitchMessage(channel, "The price of " + pcMessage + " is: " + PcUtils.getItemPc(pcMessage));
 
                     break;
             }

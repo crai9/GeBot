@@ -5,12 +5,14 @@ package to.us.craig.twitchai.util;
  */
 public class PcUtils {
 
+    static String baseURL = "http://services.runescape.com/m=itemdb_rs/api/catalogue/detail.json?item=";
+
     public static String getItemPc(String itemName){
 
-        //TODO code this
+        int id = DBUtil.searchForItemId(itemName);
+        String json = HttpUtils.getTextFromUrl(baseURL + id);
 
-
-        return "";
+        return json;
     }
 
 }
