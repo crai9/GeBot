@@ -1,0 +1,8 @@
+data/channels/*
+out
+*.iml
+.DS_Store
+.idea
+data/log*
+data/err*
+data/config.cfg
