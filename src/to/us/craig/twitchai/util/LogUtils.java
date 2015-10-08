@@ -12,6 +12,12 @@ public class LogUtils
         writeToTextFile("data", "/log_" + g_dateformat.format(g_date) + ".txt", g_datetimeformat.format(g_date) + ": " + msg);
     }
 
+    public static void logMsg(int msg)
+    {
+        System.out.print("[LOG]: " + msg + "\n");
+        writeToTextFile("data", "/log_" + g_dateformat.format(g_date) + ".txt", g_datetimeformat.format(g_date) + ": " + msg);
+    }
+
     public static void logMsg(String directory, String filename, String msg)
     {
         System.out.print("[LOG]: " + msg + "\n");

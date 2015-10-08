@@ -780,9 +780,7 @@ public class TwitchAI extends PircBot
                         break;
                     }
 
-                    logMsg("At this point the user would be asking for pc of " + pcMessage + "...");
-
-                    sendTwitchMessage(channel, "The price of " + pcMessage + " is: " + PcUtils.getItemPc(pcMessage));
+                    sendTwitchMessage(channel, "The price of " + pcMessage + " is: " + getItemPc(pcMessage));
 
                     break;
             }

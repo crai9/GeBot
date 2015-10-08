@@ -31,7 +31,7 @@ public class HttpUtils {
         catch (IOException e) {
             System.out.println("I/O Error: " + e.getMessage());
         }
-        return "test";
+        return "Not available";
 
     }
 
