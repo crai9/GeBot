@@ -788,7 +788,6 @@ public class GeBot extends PircBot
                     }
 
                     String price = getItemPc(pcMessage);
-                    //NumberFormat.getNumberInstance(Locale.US).format();
 
                     sendTwitchMessage(channel, "The price of " + pcMessage + " is: " + price + " gp.");
 

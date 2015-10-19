@@ -52,16 +52,50 @@ public class DBUtil {
 
     public static void main(String[] args){
 
-        String query = "cannonball";
-
-        int id = searchForItemId(query);
-
-        System.out.println(query + "'s id is: " + id);
+        addItem(2, "Cannonball", 0, "Tradable");
 
     }
 
     public static void logPreparedStatement(PreparedStatement p){
         System.out.println("[QUERY] : " + p.toString().split(": ")[1]);
+    }
+
+    public static void addItem(int itemId, String itemName, int page, String tradeable){
+
+        Connection dbConnection = null;
+
+        PreparedStatement preparedStatement = null;
+
+        String sql =    "INSERT INTO items" +
+                        " (id, itemName, itemId, page, tradable)" +
+                        " VALUES (NULL,?,?,?,?)";
+
+        try {
+
+            dbConnection = getDBConnection();
+            preparedStatement = dbConnection.prepareStatement(sql);
+
+            preparedStatement.setString(1, itemName);
+            preparedStatement.setInt(2, itemId);
+            preparedStatement.setInt(3, page);
+            preparedStatement.setString(4, tradeable);
+
+            //logPreparedStatement(preparedStatement);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+
+            System.out.println(e.getMessage());
+
+        } finally {
+            try {
+                dbConnection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
 
     public static int searchForItemId(String item){
