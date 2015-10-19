@@ -1,10 +1,10 @@
-package to.us.craig.twitchai.util;
+package com.us.craig.gebot.util;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import to.us.craig.twitchai.bot.TwitchUser;
+import com.us.craig.gebot.bot.TwitchUser;
 
 public class Globals
 {

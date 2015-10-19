@@ -1,9 +1,9 @@
-package to.us.craig.twitchai.util;
+package com.us.craig.gebot.util;
 
-import static to.us.craig.twitchai.util.Globals.*;
-import static to.us.craig.twitchai.util.LogUtils.logMsg;
-import static to.us.craig.twitchai.util.LogUtils.logErr;
-import static to.us.craig.twitchai.util.GenUtils.exit;
+import static com.us.craig.gebot.util.Globals.*;
+import static com.us.craig.gebot.util.LogUtils.logMsg;
+import static com.us.craig.gebot.util.LogUtils.logErr;
+import static com.us.craig.gebot.util.GenUtils.exit;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,7 +43,7 @@ public class ConfUtils
             p.setProperty("g_bot_reqMembership", "true");
             p.setProperty("g_bot_reqCommands", "true");
             p.setProperty("g_bot_reqTags", "false");
-            p.setProperty("g_bot_name", "TwitchAI");
+            p.setProperty("g_bot_name", "GeBot");
             p.setProperty("g_bot_oauth", "youroauth");
             p.setProperty("g_bot_chan", "#IllusionAI");
 

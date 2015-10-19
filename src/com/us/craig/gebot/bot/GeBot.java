@@ -1,23 +1,25 @@
-package to.us.craig.twitchai.bot;
+package com.us.craig.gebot.bot;
 
-import static to.us.craig.twitchai.util.Globals.*;
-import static to.us.craig.twitchai.util.LogUtils.logMsg;
-import static to.us.craig.twitchai.util.LogUtils.logErr;
-import static to.us.craig.twitchai.util.GenUtils.exit;
-import static to.us.craig.twitchai.util.PcUtils.getItemPc;
+import static com.us.craig.gebot.util.Globals.*;
+import static com.us.craig.gebot.util.LogUtils.logMsg;
+import static com.us.craig.gebot.util.LogUtils.logErr;
+import static com.us.craig.gebot.util.GenUtils.exit;
+import static com.us.craig.gebot.util.PcUtils.getItemPc;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 
-import to.us.craig.twitchai.util.FileUtils;
-import to.us.craig.twitchai.util.PcUtils;
+import com.us.craig.gebot.util.FileUtils;
+import com.us.craig.gebot.util.PcUtils;
 
-public class TwitchAI extends PircBot
+public class GeBot extends PircBot
 {
 
     private float                    m_cycleTime;
@@ -28,7 +30,7 @@ public class TwitchAI extends PircBot
     private ArrayList<TwitchUser>    m_moderators;
     private ArrayList<TwitchChannel> m_channels;
 
-    public TwitchAI()
+    public GeBot()
     {
         m_cycleTime = 0.0f;
         m_cmdTime = 0.0f;
@@ -45,13 +47,13 @@ public class TwitchAI extends PircBot
 
     public void init_twitch()
     {
-        logMsg("Loading all registered TwitchAI moderators...");
+        logMsg("Loading all registered GeBot moderators...");
         ArrayList<String> loadedModerators = FileUtils.readTextFile("data/moderators.txt");
         for (String m : loadedModerators)
         {
             String[] m_split = m.split(" ");
             TwitchUser newmod = new TwitchUser(m_split[0], m_split[1]);
-            logMsg("Added a TwitchAI moderator (" + newmod + ") to m_moderators");
+            logMsg("Added a GeBot moderator (" + newmod + ") to m_moderators");
             m_moderators.add(newmod);
         }
 
@@ -446,6 +448,11 @@ public class TwitchAI extends PircBot
                     sendTwitchMessage(channel, g_timeformat.format(g_date));
                     break;
 
+                case "clear":
+                    sendTwitchMessage(channel, "/clear");
+                    break;
+
+
                 case "users":
                     if (msg_array.length <= 1)
                     {
@@ -511,13 +518,13 @@ public class TwitchAI extends PircBot
                 case "mods":
                     if (msg_array.length <= 1)
                     {
-                        sendTwitchMessage(channel, "TwitchAI Moderators in this channel: " + twitch_channel.getModerators());
+                        sendTwitchMessage(channel, "GeBot Moderators in this channel: " + twitch_channel.getModerators());
                         break;
                     }
 
                     if (msg_array[1].equals("all"))
                     {
-                        sendTwitchMessage(channel, "TwitchAI Moderators: " + getOfflineModerators());
+                        sendTwitchMessage(channel, "GeBot Moderators: " + getOfflineModerators());
                         break;
                     }
 
@@ -536,7 +543,7 @@ public class TwitchAI extends PircBot
                         break;
                     }
 
-                    sendTwitchMessage(channel, "TwitchAI Moderators in channel (" + mods_channel + "): " + mods_channel.getModerators());
+                    sendTwitchMessage(channel, "GeBot Moderators in channel (" + mods_channel + "): " + mods_channel.getModerators());
                     break;
 
                 case "channel":
@@ -597,7 +604,7 @@ public class TwitchAI extends PircBot
                     break;
 
                 /*
-                 * Normal TwitchAI moderator commands below
+                 * Normal GeBot moderator commands below
                  */
                 case "joinchan":
                     if (!twitch_user.isModerator())
@@ -688,7 +695,7 @@ public class TwitchAI extends PircBot
                     break;
 
                 /*
-                 * Normal TwitchAI admin commands below
+                 * Normal GeBot admin commands below
                  */
                 case "addmod":
                     if (!twitch_user.isAdmin())
@@ -780,7 +787,10 @@ public class TwitchAI extends PircBot
                         break;
                     }
 
-                    sendTwitchMessage(channel, "The price of " + pcMessage + " is: " + getItemPc(pcMessage));
+                    String price = getItemPc(pcMessage);
+                    //NumberFormat.getNumberInstance(Locale.US).format();
+
+                    sendTwitchMessage(channel, "The price of " + pcMessage + " is: " + price + " gp.");
 
                     break;
             }

@@ -1,8 +1,8 @@
-package to.us.craig.twitchai.util;
+package com.us.craig.gebot.util;
 
-import static to.us.craig.twitchai.util.GenUtils.*;
-import static to.us.craig.twitchai.util.LogUtils.logMsg;
-import static to.us.craig.twitchai.util.LogUtils.logErr;
+import static com.us.craig.gebot.util.GenUtils.*;
+import static com.us.craig.gebot.util.LogUtils.logMsg;
+import static com.us.craig.gebot.util.LogUtils.logErr;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -47,7 +47,7 @@ public class FileUtils
     {
         if (!directoryExists(directory))
         {
-            logErr("Cannot write to file " + fileName + " in directory " + directory + "! The directory doesn't exist.");
+            logErr("Cannot write com file " + fileName + " in directory " + directory + "! The directory doesn't exist.");
             return;
         }
 
@@ -110,10 +110,10 @@ public class FileUtils
                 exit(1);
             }
 
-            // Failed to create directory!
+            // Failed com create directory!
             if (!result)
             {
-                logErr("Failed to create directory! " + directory);
+                logErr("Failed com create directory! " + directory);
             }
         }
 

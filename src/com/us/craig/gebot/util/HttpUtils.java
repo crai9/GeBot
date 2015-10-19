@@ -1,4 +1,4 @@
-package to.us.craig.twitchai.util;
+package com.us.craig.gebot.util;
 
 /**
  * Created by craig on 04/10/2015.

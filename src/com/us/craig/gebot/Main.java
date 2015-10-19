@@ -1,14 +1,14 @@
-package to.us.craig.twitchai;
+package com.us.craig.gebot;
 
-import static to.us.craig.twitchai.util.Globals.*;
-import static to.us.craig.twitchai.util.LogUtils.logMsg;
-import static to.us.craig.twitchai.util.LogUtils.logErr;
-import static to.us.craig.twitchai.util.GenUtils.exit;
-import to.us.craig.twitchai.bot.TwitchChannel;
-import to.us.craig.twitchai.bot.TwitchUser;
-import to.us.craig.twitchai.bot.TwitchAI;
-import to.us.craig.twitchai.util.ConfUtils;
-import to.us.craig.twitchai.util.FileUtils;
+import static com.us.craig.gebot.util.Globals.*;
+import static com.us.craig.gebot.util.LogUtils.logMsg;
+import static com.us.craig.gebot.util.LogUtils.logErr;
+import static com.us.craig.gebot.util.GenUtils.exit;
+import com.us.craig.gebot.bot.TwitchChannel;
+import com.us.craig.gebot.bot.TwitchUser;
+import com.us.craig.gebot.bot.GeBot;
+import com.us.craig.gebot.util.ConfUtils;
+import com.us.craig.gebot.util.FileUtils;
 
 public class Main
 {
@@ -18,7 +18,7 @@ public class Main
         FileUtils.directoryExists("data");
         FileUtils.directoryExists("data/channels");
         ConfUtils.init();
-        TwitchAI twitchai = new TwitchAI();
+        GeBot twitchai = new GeBot();
         twitchai.init_twitch();
 
         int init_time = 5;
@@ -37,7 +37,7 @@ public class Main
 
         if (!twitchai.isInitialized())
         {
-            logErr("Failed to receive twitch member/cmd/tag permissions!");
+            logErr("Failed com receive twitch member/cmd/tag permissions!");
             exit(1);
         }
 

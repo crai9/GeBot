@@ -1,7 +1,7 @@
-package to.us.craig.twitchai.util;
+package com.us.craig.gebot.util;
 
-import static to.us.craig.twitchai.util.Globals.*;
-import static to.us.craig.twitchai.util.FileUtils.*;
+import static com.us.craig.gebot.util.Globals.*;
+import static com.us.craig.gebot.util.FileUtils.*;
 
 public class LogUtils
 {

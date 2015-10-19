@@ -1,7 +1,7 @@
-package to.us.craig.twitchai.util;
+package com.us.craig.gebot.util;
 
-import static to.us.craig.twitchai.util.LogUtils.logMsg;
-import static to.us.craig.twitchai.util.LogUtils.logErr;
+import static com.us.craig.gebot.util.LogUtils.logMsg;
+import static com.us.craig.gebot.util.LogUtils.logErr;
 
 public class GenUtils
 {

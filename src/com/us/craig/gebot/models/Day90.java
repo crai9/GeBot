@@ -1,12 +1,12 @@
-package to.us.craig.twitchai.models;
+package com.us.craig.gebot.models;
 
 /**
  * Created by craig on 08/10/2015.
  */
-public class Today {
+public class Day90 {
 
     private String trend;
-    private int price;
+    private String change;
 
     public String getTrend() {
         return trend;
@@ -16,11 +16,11 @@ public class Today {
         this.trend = trend;
     }
 
-    public int getPrice() {
-        return price;
+    public String getChange() {
+        return change;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setChange(String change) {
+        this.change = change;
     }
 }

@@ -1,4 +1,4 @@
-package to.us.craig.twitchai.bot;
+package com.us.craig.gebot.bot;
 
 import java.util.ArrayList;
 

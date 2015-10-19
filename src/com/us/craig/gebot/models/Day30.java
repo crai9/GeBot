@@ -1,9 +1,9 @@
-package to.us.craig.twitchai.models;
+package com.us.craig.gebot.models;
 
 /**
  * Created by craig on 08/10/2015.
  */
-public class Day90 {
+public class Day30 {
 
     private String trend;
     private String change;
