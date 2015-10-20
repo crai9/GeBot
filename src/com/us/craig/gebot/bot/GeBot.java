@@ -778,6 +778,19 @@ public class GeBot extends PircBot
                         sendTwitchMessage(c.getName(), "System broadcast message: " + broadcast_message);
                     }
                     break;
+                case "count":
+
+
+                    String game = "";
+                    if (msg_array.length <= 1){
+                        game = "Kappa";
+                    } else {
+                        game = msg_array[1];
+                    }
+
+                    sendTwitchMessage(channel, NewCommands.playerCount(game));
+
+                    break;
                 case "pc":
 
                     String pcMessage = message.replace("pc ", "");
