@@ -13,10 +13,10 @@ import java.io.IOException;
 
 public class ScrapingUtils {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void scrape(int pages) throws InterruptedException {
 
         int start = 0;
-        int max = 71;
+        int max = pages;
         String baseUrl = "http://runeapps.org/apps/ge/browse.php?page=";
         long sleep = 500;
 
@@ -41,10 +41,6 @@ public class ScrapingUtils {
 
             Thread.sleep(sleep);
         }
-
-
-
-
     }
 
 }

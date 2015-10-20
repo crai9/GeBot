@@ -343,7 +343,7 @@ public class GeBot extends PircBot
 
         for(int i=0; i < swears.length; i++){
             if(message.contains(swears[i])){
-                sendTwitchMessage(channel, "/timeout " + twitch_user.getName() + " 20" );
+                sendTwitchMessage(channel, "/timeout " + twitch_user.getName() + " 1" );
             }
         }
 

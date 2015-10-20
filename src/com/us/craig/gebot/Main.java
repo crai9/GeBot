@@ -9,12 +9,44 @@ import com.us.craig.gebot.bot.TwitchUser;
 import com.us.craig.gebot.bot.GeBot;
 import com.us.craig.gebot.util.ConfUtils;
 import com.us.craig.gebot.util.FileUtils;
+import com.us.craig.gebot.util.ScrapingUtils;
 
 public class Main
 {
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) throws InterruptedException {
+
+        if(args.length > 1){
+
+            if(args[0].equals("scrape")){
+                int pages;
+                try{
+                    pages = Integer.parseInt(args[1]);
+                }catch (ArrayIndexOutOfBoundsException a){
+                    pages = 71;
+                }
+
+                scrape(pages);
+            }
+
+        } else {
+
+            twitch();
+
+        }
+
+        //twitch();
+
+    }
+
+    public static void scrape(int pages) throws InterruptedException {
+
+        ScrapingUtils.scrape(pages);
+
+    }
+
+    public static void twitch(){
+
         FileUtils.directoryExists("data");
         FileUtils.directoryExists("data/channels");
         ConfUtils.init();
@@ -91,4 +123,5 @@ public class Main
             }
         }
     }
+
 }
