@@ -8,6 +8,10 @@ import org.jsoup.nodes.Element;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by craig on 20/10/2015.
  */
@@ -15,11 +19,36 @@ public class NewCommands {
 
     public static void main(String[] args){
 
-        System.out.print(playerCount("RS3"));
+        System.out.print(getRuneDate());
 
     }
 
-    public static String playerCount(String game){
+    public static long getRuneDate(){
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
+        Date now = new Date();
+        Date start = new Date();
+
+        try {
+            start = simpleDateFormat.parse("27/2/2002 00:00:00");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        long different = now.getTime() - start.getTime();
+
+        long secondsInMilli = 1000;
+        long minutesInMilli = secondsInMilli * 60;
+        long hoursInMilli = minutesInMilli * 60;
+        long daysInMilli = hoursInMilli * 24;
+
+        long elapsedDays = different / daysInMilli;
+
+        return elapsedDays;
+
+    }
+
+    public static String getPlayerCount(String game){
 
         int count = -1;
         String output = "";

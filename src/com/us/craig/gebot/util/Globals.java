@@ -17,8 +17,9 @@ public class Globals
     public static String           g_bot_name;
     public static String           g_bot_oauth;
     public static String           g_bot_chan;
-    public static String           g_bot_version    = "GeBot 0.0.1";
-    public static String           g_lib_version    = "PircBot 1.5.0";
+    public static String           g_bot_desc       = "A mildly useful bot for getting information about RS. !help for commands. ";
+    public static String           g_bot_version    = "GeBot v0.3. ";
+    public static String           g_lib_version    = "PircBot 1.5.0 ";
 
     // Time & Date
     public static DateFormat       g_datetimeformat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -27,11 +28,11 @@ public class Globals
     public static Date             g_date           = new Date();
 
     // Global variables
-    public static final String     g_commands_user  = "!help !info !performance !date !time !users !ops !mods !channel !channels !slots";
+    public static final String     g_commands_user  = "!help !info !date !time !slots !count !pc";
     public static final String     g_commands_op    = "!permit";
     public static final String     g_commands_mod   = "!joinchan !partchan !addchan !delchan";
     public static final String     g_commands_admin = "!addmod !delmod ";
-    public static final String     g_commands_bot   = "!help !register !unregister";
+    public static final String     g_commands_bot   = "!help !join !leave";
     public static final String[]   g_emotes_faces   = { "4Head", "Kappa", "Keepo" };
 
     // Server messages
