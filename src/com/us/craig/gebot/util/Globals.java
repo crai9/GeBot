@@ -17,7 +17,7 @@ public class Globals
     public static String           g_bot_name;
     public static String           g_bot_oauth;
     public static String           g_bot_chan;
-    public static String           g_bot_desc       = "A mildly useful bot for getting information about RS. !help for commands. ";
+    public static String           g_bot_desc       = "A mildly useful chat bot for getting information about RS. !help for commands. ";
     public static String           g_bot_version    = "GeBot v0.3. ";
     public static String           g_lib_version    = "PircBot 1.5.0 ";
 

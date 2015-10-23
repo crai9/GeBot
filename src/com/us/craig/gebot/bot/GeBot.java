@@ -134,14 +134,14 @@ public class GeBot extends PircBot
         ArrayList<String> addchan_channels = FileUtils.readTextFile("data/channels.txt");
         if (addchan_channels.size() <= 0 || !addchan_channels.contains(addChan))
         {
-            logMsg("Registering a new channel: " + addChan);
-            sendTwitchMessage(channel, "Registering a new channel: " + addChan);
+            logMsg("Joining a new channel: " + addChan);
+            sendTwitchMessage(channel, "Joining channel: " + addChan);
             FileUtils.writeToTextFile("data/", "channels.txt", addChan);
             joinToChannel(addChan);
         }
         else
         {
-            logErr("Failed to register a new channel: " + addChan);
+            logErr("Failed to join a new channel: " + addChan);
             sendTwitchMessage(channel, "That channel is already registered!");
         }
         return;
@@ -154,13 +154,11 @@ public class GeBot extends PircBot
             logErr("Can't delete channel " + delChan + " from the global channels list because it isn't in the joined channels list!");
             return;
         }
-        logMsg(sender + " Requested a deletion of channel: " + delChan);
-        sendTwitchMessage(channel, sender + " Requested a deletion of channel: " + delChan);
+        logMsg(sender + " Leaving channel: " + delChan);
+        sendTwitchMessage(channel, sender + " Leaving channel: " + delChan);
         partFromChannel(delChan);
         FileUtils.removeFromTextFile("data", "/channels.txt", delChan);
     }
-
-    //TODO: Fix these damn time limits below lol
 
     public void sendTwitchMessage(String channel, String message)
     {
@@ -201,7 +199,7 @@ public class GeBot extends PircBot
     @Override
     public void handleLine(String line)
     {
-        logMsg("handleLine | " + line);
+        //logMsg("HL | " + line);
 
         super.handleLine(line);
 
@@ -331,25 +329,15 @@ public class GeBot extends PircBot
     @Override
     public void onMessage(String channel, String sender, String login, String hostname, String message)
     {
-        logMsg("data/channels/" + channel, "/onMessage", "User: " + sender + " Hostname: " + hostname + " Message: " + message);
+        logMsg("data/channels/" + channel, "/onMessage", sender + " | " + message);
 
         TwitchChannel twitch_channel = getTwitchChannel(channel);
         TwitchUser twitch_user = twitch_channel.getUser(sender);
 
-        //Handle bad words
-        //TODO: refactor that
-
-//        String[] swears = {"lemonade", "pie", "cake"};
-//
-//        for(int i=0; i < swears.length; i++){
-//            if(message.contains(swears[i])){
-//                sendTwitchMessage(channel, "/timeout " + twitch_user.getName() + " 1" );
-//            }
-//        }
-
         /*
          * Handle all chat commands
          */
+
         if (message.startsWith("!"))
         {
 
@@ -394,18 +382,19 @@ public class GeBot extends PircBot
             /*
              * Commands available on the bot's own channel
              */
+
             if (channel.equals(g_bot_chan))
             {
-                switch (msg_command)
+                switch (msg_command.toLowerCase())
                 {
                     case "help":
                         sendTwitchMessage(channel, "List of available commands on this channel: " + g_commands_bot);
                         break;
                     case "join":
-                        addChannel(channel, g_bot_name, "#" + user_sender);
+                        addChannel(channel, g_bot_name, user_sender);
                         break;
                     case "leave":
-                        delChannel(channel, g_bot_name, "#" + user_sender);
+                        delChannel(channel, g_bot_name, user_sender);
                         break;
                 }
             }
@@ -413,7 +402,8 @@ public class GeBot extends PircBot
             /*
              * Commands available on all channels
              */
-            switch (msg_command)
+
+            switch (msg_command.toLowerCase())
             {
 
             /*
@@ -421,21 +411,6 @@ public class GeBot extends PircBot
              */
                 case "help":
                     String help_text = "List of available commands to you: " + g_commands_user;
-
-//                    if (twitch_user.isOperator())
-//                    {
-//                        help_text += " " + g_commands_op;
-//                    }
-//
-//                    if (twitch_user.isModerator())
-//                    {
-//                        help_text += " " + g_commands_mod;
-//                    }
-//
-//                    if (twitch_user.isAdmin())
-//                    {
-//                        help_text += " " + g_commands_admin;
-//                    }
 
                     sendTwitchMessage(channel, help_text);
                     break;
@@ -460,104 +435,6 @@ public class GeBot extends PircBot
                     sendTwitchMessage(channel, "/clear");
                     break;
 
-
-//                case "users":
-//                    if (msg_array.length <= 1)
-//                    {
-//                        sendTwitchMessage(channel, "Users in this channel: " + twitch_channel.getUsers().size());
-//                        break;
-//                    }
-//
-//                    if (msg_array[1].equals("all"))
-//                    {
-//                        sendTwitchMessage(channel, "Users in all channels: " + getAllUsers().size());
-//                        break;
-//                    }
-//
-//                    chan_target = msg_array[1];
-//
-//                    if (!chan_target.startsWith("#"))
-//                    {
-//                        chan_target = "#" + chan_target;
-//                    }
-//
-//                    TwitchChannel users_channel = getTwitchChannel(chan_target);
-//
-//                    if (users_channel == null)
-//                    {
-//                        logErr("Error on !users channel, channel (" + chan_target + ") doesn't exist!");
-//                        break;
-//                    }
-//
-//                    sendTwitchMessage(channel, "Users in channel (" + users_channel + "): " + users_channel.getUsers().size());
-//                    break;
-
-//                case "ops":
-//                    if (msg_array.length <= 1)
-//                    {
-//                        sendTwitchMessage(channel, "Operators in this channel: " + twitch_channel.getOperators());
-//                        break;
-//                    }
-//
-//                    if (msg_array[1].equals("all"))
-//                    {
-//                        sendTwitchMessage(channel, "Operators in all channels: " + getAllOperators().size());
-//                        break;
-//                    }
-//
-//                    chan_target = msg_array[1];
-//
-//                    if (!chan_target.startsWith("#"))
-//                    {
-//                        chan_target = "#" + chan_target;
-//                    }
-//
-//                    TwitchChannel ops_channel = getTwitchChannel(chan_target);
-//
-//                    if (ops_channel == null)
-//                    {
-//                        logErr("Error on !ops channel, channel (" + chan_target + ") doesn't exist!");
-//                        break;
-//                    }
-//
-//                    sendTwitchMessage(channel, "Operators in channel (" + ops_channel + "): " + ops_channel.getOperators());
-//                    break;
-//
-//                case "mods":
-//                    if (msg_array.length <= 1)
-//                    {
-//                        sendTwitchMessage(channel, "GeBot Moderators in this channel: " + twitch_channel.getModerators());
-//                        break;
-//                    }
-//
-//                    if (msg_array[1].equals("all"))
-//                    {
-//                        sendTwitchMessage(channel, "GeBot Moderators: " + getOfflineModerators());
-//                        break;
-//                    }
-//
-//                    chan_target = msg_array[1];
-//
-//                    if (!chan_target.startsWith("#"))
-//                    {
-//                        chan_target = "#" + chan_target;
-//                    }
-//
-//                    TwitchChannel mods_channel = getTwitchChannel(chan_target);
-//
-//                    if (mods_channel == null)
-//                    {
-//                        logErr("Error on !mods channel, channel (" + chan_target + ") doesn't exist!");
-//                        break;
-//                    }
-//
-//                    sendTwitchMessage(channel, "GeBot Moderators in channel (" + mods_channel + "): " + mods_channel.getModerators());
-//                    break;
-//
-//                case "channel":
-//                    sendTwitchMessage(channel, "Current channel info: " + twitch_channel);
-//                    break;
-
                 case "channels":
                     sendTwitchMessage(channel, "Registered channels: " + getTwitchChannels().size());
                     break;
@@ -575,196 +452,6 @@ public class GeBot extends PircBot
                     }
                     break;
 
-                /*
-                 * Normal channel operator commands below
-                 */
-//                case "permit":
-//                    if (!twitch_user.isOperator())
-//                    {
-//                        break;
-//                    }
-//
-//                    if (msg_array.length <= 2)
-//                    {
-//                        sendTwitchMessage(channel, "Wrong syntax! Usage: !permit username true/false");
-//                        break;
-//                    }
-//
-//                    user_target = msg_array[1];
-//
-//                    TwitchUser permit_user = twitch_channel.getUser(user_target);
-//                    if (permit_user == null)
-//                    {
-//                        logErr("Error on !permit user on channel (" + twitch_channel + ")! Target user (" + user_target + ") not found!");
-//                        break;
-//                    }
-//
-//                    if (msg_array[2].equals("true"))
-//                    {
-//                        sendTwitchMessage(channel, sender + " Gave " + permit_user + " a permission to post links!");
-//                        permit_user.setUrlPermit(true);
-//                    }
-//                    else if (msg_array[2].equals("false"))
-//                    {
-//                        sendTwitchMessage(channel, sender + " Took " + permit_user + " permissions to post links!");
-//                        permit_user.setUrlPermit(false);
-//                    }
-//                    break;
-
-                /*
-                 * Normal GeBot moderator commands below
-                 */
-//                case "joinchan":
-//                    if (!twitch_user.isModerator())
-//                    {
-//                        break;
-//                    }
-//
-//                    if (msg_array.length <= 1)
-//                    {
-//                        sendTwitchMessage(channel, "Wrong syntax! Usage: !joinchan channel");
-//                        break;
-//                    }
-//
-//                    if (!msg_array[1].startsWith("#"))
-//                    {
-//                        msg_array[1] = "#" + msg_array[1];
-//                    }
-//
-//                    logMsg(sender + " Requested a join to channel: " + msg_array[1]);
-//                    joinToChannel(msg_array[1]);
-//                    break;
-//
-//                case "partchan":
-//                    if (!twitch_user.isModerator())
-//                    {
-//                        break;
-//                    }
-//
-//                    if (msg_array.length <= 1)
-//                    {
-//                        sendTwitchMessage(channel, "Wrong syntax! Usage: !joinchan channel");
-//                        break;
-//                    }
-//
-//                    if (!msg_array[1].startsWith("#"))
-//                    {
-//                        msg_array[1] = "#" + msg_array[1];
-//                    }
-//
-//                    if (!Arrays.asList(getChannels()).contains(msg_array[1]))
-//                    {
-//                        logErr("Can't part channel " + msg_array[1] + " because it isn't in the joined channels list!");
-//                        break;
-//                    }
-//
-//                    logMsg(sender + " Requested a quit from channel: " + msg_array[1]);
-//                    partFromChannel(msg_array[1]);
-//                    break;
-//
-//                case "addchan":
-//                    if (!twitch_user.isModerator())
-//                    {
-//                        break;
-//                    }
-//
-//                    if (msg_array.length <= 1)
-//                    {
-//                        sendTwitchMessage(channel, "Wrong syntax! Usage: !addchan channel");
-//                        break;
-//                    }
-//
-//                    if (!msg_array[1].startsWith("#"))
-//                    {
-//                        msg_array[1] = "#" + msg_array[1];
-//                    }
-//
-//                    addChannel(channel, sender, msg_array[1]);
-//                    break;
-//
-//                case "delchan":
-//                    if (!twitch_user.isModerator())
-//                    {
-//                        break;
-//                    }
-//
-//                    if (msg_array.length <= 1)
-//                    {
-//                        sendTwitchMessage(channel, "Wrong syntax! Usage: !delchan channel");
-//                        break;
-//                    }
-//
-//                    if (!msg_array[1].startsWith("#"))
-//                    {
-//                        msg_array[1] = "#" + msg_array[1];
-//                    }
-//
-//                    delChannel(channel, sender, msg_array[1]);
-//                    break;
-
-                /*
-                 * Normal GeBot admin commands below
-                 */
-//                case "addmod":
-//                    if (!twitch_user.isAdmin())
-//                    {
-//                        break;
-//                    }
-//
-//                    if (msg_array.length <= 1)
-//                    {
-//                        sendTwitchMessage(channel, "Wrong syntax! Usage: !addmod username");
-//                        break;
-//                    }
-//
-//                    user_target = msg_array[1];
-//
-//                    TwitchUser addmod_user = getOfflineModerator(user_target);
-//                    if (addmod_user == null)
-//                    {
-//                        TwitchUser moderator = new TwitchUser(user_target, "*");
-//                        m_moderators.add(moderator);
-//                        twitch_channel.getUser(user_target).addPrefixChar("*");
-//                        FileUtils.writeToTextFile("data/", "moderators.txt", user_target + " *");
-//                        sendTwitchMessage(channel, sender + " Added a new moderator: " + moderator);
-//                        logMsg(sender + " Added a new moderator: " + moderator);
-//                    }
-//                    else
-//                    {
-//                        logErr(sender + " Tried to add " + addmod_user + " as a moderator, but the user already is a moderator.");
-//                        sendTwitchMessage(channel, addmod_user + " Already is a moderator!");
-//                    }
-//                    break;
-
-//                case "delmod":
-//                    if (!twitch_user.isAdmin())
-//                    {
-//                        break;
-//                    }
-//
-//                    if (msg_array.length <= 1)
-//                    {
-//                        sendTwitchMessage(channel, "Wrong syntax! Usage: !delmod username");
-//                        break;
-//                    }
-//
-//                    user_target = msg_array[1];
-//
-//                    TwitchUser delmod_user = getOfflineModerator(user_target);
-//                    if (delmod_user != null)
-//                    {
-//                        m_moderators.remove(delmod_user);
-//                        twitch_channel.getUser(user_target).delPrefixChar("*");
-//                        FileUtils.removeFromTextFile("data/", "moderators.txt", user_target + " " + delmod_user.getPrefix());
-//                        sendTwitchMessage(channel, sender + " Removed a moderator: " + delmod_user);
-//                        logMsg(sender + " Removed a moderator: " + delmod_user);
-//                    }
-//                    else
-//                    {
-//                        logErr(sender + " Tried to remove a moderator: " + user_target + " that doesn't exist.");
-//                        sendTwitchMessage(channel, sender + " Tried to remove a moderator: " + user_target + " that doesn't exist.");
-//                    }
-//                    break;
 
                 case "broadcast":
                     if (!twitch_user.isAdmin())
@@ -785,6 +472,11 @@ public class GeBot extends PircBot
                         logMsg("Sending a broadcast message to channel (" + c + ") Message: " + broadcast_message);
                         sendTwitchMessage(c.getName(), "System broadcast message: " + broadcast_message);
                     }
+                    break;
+                case "vos":
+
+                    sendTwitchMessage(channel, NewCommands.getActiveVos());
+
                     break;
                 case "count":
 
@@ -825,7 +517,7 @@ public class GeBot extends PircBot
     @Override
     public void onPrivateMessage(String sender, String login, String hostname, String message)
     {
-        logMsg("data", "/privmsg", "User: " + sender + " Hostname: " + hostname + " Message: " + message);
+        logMsg("data", "/privmsg", sender + " | " + message);
     }
 
     public ArrayList<TwitchChannel> getTwitchChannels()

@@ -1,9 +1,10 @@
 package com.us.craig.gebot.bot;
 
+import com.us.craig.gebot.models.VOS;
 import com.us.craig.gebot.util.HttpUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
+import com.google.gson.*;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -15,12 +16,32 @@ import java.util.Date;
 /**
  * Created by craig on 20/10/2015.
  */
+
 public class NewCommands {
 
     public static void main(String[] args){
 
-        System.out.print(getRuneDate());
+        System.out.print(getActiveVos());
 
+    }
+
+    public static String getActiveVos(){
+        String activeVos = "";
+        String clan1 = "";
+        String clan2 = "";
+        String apiUrl = "https://fdcvos.herokuapp.com/api/tweets/findOne?filter={%22order%22:%20%22timestamp_ms%20DESC%22}";
+
+        String json = HttpUtils.getTextFromUrl(apiUrl);
+
+        Gson gson = new Gson();
+
+        VOS v = gson.fromJson(json, VOS.class);
+
+        clan1 = v.getText().split(" ")[9];
+        clan2 = v.getText().split(" ")[11];
+        activeVos = clan1 + " & " + clan2;
+
+        return "Current VoS: " + activeVos;
     }
 
     public static long getRuneDate(){
