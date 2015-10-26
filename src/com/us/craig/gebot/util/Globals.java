@@ -18,7 +18,7 @@ public class Globals
     public static String           g_bot_oauth;
     public static String           g_bot_chan;
     public static String           g_bot_desc       = "A mildly useful chat bot for getting information about RS. !help for commands. ";
-    public static String           g_bot_version    = "GeBot v0.3.5. ";
+    public static String           g_bot_version    = "GeBot v0.3.6. ";
     public static String           g_lib_version    = "PircBot 1.5.0 ";
 
     // Time & Date
@@ -28,7 +28,7 @@ public class Globals
     public static Date             g_date           = new Date();
 
     // Global variables
-    public static final String     g_commands_user  = "!help !info !date !time !slots !count !pc !runedate !vos";
+    public static final String     g_commands_user  = "!help !info !date !time !slots !count !pc !runedate !vos !reset !warbands";
     public static final String     g_commands_op    = "!permit";
     public static final String     g_commands_mod   = "!joinchan !partchan !addchan !delchan";
     public static final String     g_commands_admin = "!addmod !delmod ";

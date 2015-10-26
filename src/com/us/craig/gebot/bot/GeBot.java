@@ -347,25 +347,25 @@ public class GeBot extends PircBot
                 twitch_user = g_nulluser;
             }
 
-            if (message.length() > 3)
-            {
-                if (twitch_user.getCmdTimer() > 0)
-                {
-                    if (twitch_user.getCmdTimer() > 10 && twitch_channel.getCmdSent() < 32)
-                    {
-                        sendTwitchMessage(channel, twitch_user + " Please wait " + twitch_user.getCmdTimer() + " seconds before sending a new command.");
-                    }
-                    twitch_user.setCmdTimer(twitch_user.getCmdTimer() + 5);
-                    return;
-                }
-                else
-                {
-                    if (!twitch_user.getName().equals("null"))
-                    {
-                        twitch_user.setCmdTimer(5);
-                    }
-                }
-            }
+//            if (message.length() > 3)
+//            {
+//                if (twitch_user.getCmdTimer() > 0)
+//                {
+//                    if (twitch_user.getCmdTimer() > 10 && twitch_channel.getCmdSent() < 32)
+//                    {
+//                        sendTwitchMessage(channel, twitch_user + " Please wait " + twitch_user.getCmdTimer() + " seconds before sending a new command.");
+//                    }
+//                    twitch_user.setCmdTimer(twitch_user.getCmdTimer() + 5);
+//                    return;
+//                }
+//                else
+//                {
+//                    if (!twitch_user.getName().equals("null"))
+//                    {
+//                        twitch_user.setCmdTimer(5);
+//                    }
+//                }
+//            }
 
             message = message.replace("!", "");
             String[] msg_array = message.split(" ");
@@ -420,15 +420,23 @@ public class GeBot extends PircBot
                     break;
 
                 case "time":
-                    sendTwitchMessage(channel, g_timeformat.format(g_date) + "(UTC -5)");
+                    sendTwitchMessage(channel, NewCommands.getRsTime());
                     break;
 
                 case "info":
                     sendTwitchMessage(channel, g_bot_desc + g_bot_version);
                     break;
 
+                case "reset":
+                    sendTwitchMessage(channel, NewCommands.getTimeTillReset());
+                    break;
+
+                case "warbands":
+                    sendTwitchMessage(channel, NewCommands.getTimeTillWbs());
+                    break;
+
                 case "runedate":
-                    sendTwitchMessage(channel, "The current runedate is: " + String.valueOf(NewCommands.getRuneDate()) + ".");
+                    sendTwitchMessage(channel, NewCommands.getRuneDate());
                     break;
 
                 case "clear":
@@ -507,10 +515,10 @@ public class GeBot extends PircBot
                     break;
             }
 
-            timeEnd = System.nanoTime();
-            time = (float) (timeEnd - timeStart) / 1000000.0f;
+            //timeEnd = System.nanoTime();
+            //time = (float) (timeEnd - timeStart) / 1000000.0f;
 
-            setCmdTime(getCmdTime() * 0.1f + time * 0.9f);
+            //setCmdTime(getCmdTime() * 0.1f + time * 0.9f);
         }
     }
 

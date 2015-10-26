@@ -2,6 +2,10 @@ package com.us.craig.gebot.bot;
 
 import com.us.craig.gebot.models.VOS;
 import com.us.craig.gebot.util.HttpUtils;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Duration;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import com.google.gson.*;
@@ -12,6 +16,8 @@ import java.util.Locale;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by craig on 20/10/2015.
@@ -21,8 +27,19 @@ public class NewCommands {
 
     public static void main(String[] args){
 
-        System.out.print(getActiveVos());
+        System.out.print(getRsTime());
 
+    }
+
+    public static String getTimeTillWbs(){
+
+        long millis = (25200 - ((new Date().getTime() / 1000 - 1376222417) % 25200)) * 1000;
+
+        return String.format("%02d hours, %02d min, %02d sec until next warbands.",
+                TimeUnit.MILLISECONDS.toHours(millis),
+                TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
+        );
     }
 
     public static String getActiveVos(){
@@ -44,7 +61,7 @@ public class NewCommands {
         return "Current VoS: " + activeVos;
     }
 
-    public static long getRuneDate(){
+    public static String getRuneDate(){
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
         Date now = new Date();
@@ -65,7 +82,28 @@ public class NewCommands {
 
         long elapsedDays = different / daysInMilli;
 
-        return elapsedDays;
+        return "The current runedate is: " + String.valueOf(elapsedDays) + ".";
+
+    }
+
+    public static String getTimeTillReset(){
+
+        DateTime now = DateTime.now( DateTimeZone.UTC );
+        long millis = new Duration( now , now.plusDays( 1 ).withTimeAtStartOfDay() ).getMillis();
+
+        return String.format("%02d hours, %02d min, %02d sec until daily reset.",
+                TimeUnit.MILLISECONDS.toHours(millis),
+                TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
+        );
+    }
+
+    public static String getRsTime(){
+
+        final Date currentTime = new Date();
+        final SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return "RS time is: " + sdf.format(currentTime) + ".";
 
     }
 
