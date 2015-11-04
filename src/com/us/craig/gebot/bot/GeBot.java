@@ -7,17 +7,14 @@ import static com.us.craig.gebot.util.GenUtils.exit;
 import static com.us.craig.gebot.util.PcUtils.getItemPc;
 
 import java.io.IOException;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
 
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 
 import com.us.craig.gebot.util.FileUtils;
-import com.us.craig.gebot.util.PcUtils;
 
 public class GeBot extends PircBot
 {
@@ -176,6 +173,7 @@ public class GeBot extends PircBot
             {
                 twitch_channel.setCmdSent(twitch_channel.getCmdSent() + 1);
                 sendMessage(channel, message);
+                logMsg(channel + " | " + g_bot_name + " | " + message);
             }
             else
             {
@@ -188,6 +186,7 @@ public class GeBot extends PircBot
             {
                 twitch_channel.setCmdSent(twitch_channel.getCmdSent() + 1);
                 sendMessage(channel, message);
+                logMsg(channel + " | " + g_bot_name + " | " + message);
             }
             else
             {
@@ -329,7 +328,7 @@ public class GeBot extends PircBot
     @Override
     public void onMessage(String channel, String sender, String login, String hostname, String message)
     {
-        logMsg("data/channels/" + channel, "/onMessage", sender + " | " + message);
+        logMsg("data/channels/" + channel, "/onMessage", channel + " | " + sender + " | " + message);
 
         TwitchChannel twitch_channel = getTwitchChannel(channel);
         TwitchUser twitch_user = twitch_channel.getUser(sender);
@@ -416,7 +415,7 @@ public class GeBot extends PircBot
                     break;
 
                 case "date":
-                    sendTwitchMessage(channel, g_dateformat.format(g_date));
+                    sendTwitchMessage(channel, g_dateformat.format(g_date).replace('.','/'));
                     break;
 
                 case "time":
@@ -525,7 +524,7 @@ public class GeBot extends PircBot
     @Override
     public void onPrivateMessage(String sender, String login, String hostname, String message)
     {
-        logMsg("data", "/privmsg", sender + " | " + message);
+        //logMsg("data", "/privmsg", sender + " | " + message);
     }
 
     public ArrayList<TwitchChannel> getTwitchChannels()
