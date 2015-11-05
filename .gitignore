@@ -7,3 +7,4 @@ data/log*
 data/err*
 data/config.cfg
 data/slots.txt
+*.jar

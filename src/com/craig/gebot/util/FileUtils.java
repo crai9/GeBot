@@ -1,5 +1,7 @@
 package com.craig.gebot.util;
 
+import com.craig.gebot.bot.TwitchUser;
+
 import static com.craig.gebot.util.LogUtils.logMsg;
 import static com.craig.gebot.util.LogUtils.logErr;
 import static com.craig.gebot.util.GenUtils.exit;
