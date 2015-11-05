@@ -1,12 +1,12 @@
-package com.us.craig.gebot.util;
+package com.craig.gebot.util;
 
 /**
  * Created by craig on 02/10/2015.
  */
 
 import com.google.gson.*;
-import com.us.craig.gebot.models.Holder;
-import com.us.craig.gebot.models.Item;
+import com.craig.gebot.models.Holder;
+import com.craig.gebot.models.Item;
 
 public class PcUtils {
 

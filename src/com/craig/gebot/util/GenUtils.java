@@ -1,7 +1,7 @@
-package com.us.craig.gebot.util;
+package com.craig.gebot.util;
 
-import static com.us.craig.gebot.util.LogUtils.logMsg;
-import static com.us.craig.gebot.util.LogUtils.logErr;
+import static com.craig.gebot.util.LogUtils.logMsg;
+import static com.craig.gebot.util.LogUtils.logErr;
 
 public class GenUtils
 {

@@ -1,9 +1,7 @@
-package com.us.craig.gebot.util;
+package com.craig.gebot.util;
 
-import static com.us.craig.gebot.util.Globals.*;
-import static com.us.craig.gebot.util.LogUtils.logMsg;
-import static com.us.craig.gebot.util.LogUtils.logErr;
-import static com.us.craig.gebot.util.GenUtils.exit;
+import static com.craig.gebot.util.LogUtils.logMsg;
+import static com.craig.gebot.util.LogUtils.logErr;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -53,11 +51,11 @@ public class ConfUtils
             // Close the outputstream object
             o.close();
 
-            logMsg("config.cfg" + " Created succesfully!");
+            LogUtils.logMsg("config.cfg" + " Created succesfully!");
         } catch (IOException e)
         {
-            logErr("Couldn't create the main configuration file, closing program...");
-            exit(1);
+            LogUtils.logErr("Couldn't create the main configuration file, closing program...");
+            GenUtils.exit(1);
         }
     }
 
@@ -73,22 +71,22 @@ public class ConfUtils
             p.load(i);
 
             // Get the properties and set the config variables
-            g_debug = Boolean.valueOf(p.getProperty("g_debug"));
-            g_bot_reqMembership = Boolean.valueOf(p.getProperty("g_bot_reqMembership"));
-            g_bot_reqCommands = Boolean.valueOf(p.getProperty("g_bot_reqCommands"));
-            g_bot_reqTags = Boolean.valueOf(p.getProperty("g_bot_reqTags"));
-            g_bot_name = String.valueOf(p.getProperty("g_bot_name"));
-            g_bot_oauth = String.valueOf(p.getProperty("g_bot_oauth"));
-            g_bot_chan = String.valueOf(p.getProperty("g_bot_chan"));
+            Globals.g_debug = Boolean.valueOf(p.getProperty("g_debug"));
+            Globals.g_bot_reqMembership = Boolean.valueOf(p.getProperty("g_bot_reqMembership"));
+            Globals.g_bot_reqCommands = Boolean.valueOf(p.getProperty("g_bot_reqCommands"));
+            Globals.g_bot_reqTags = Boolean.valueOf(p.getProperty("g_bot_reqTags"));
+            Globals.g_bot_name = String.valueOf(p.getProperty("g_bot_name"));
+            Globals.g_bot_oauth = String.valueOf(p.getProperty("g_bot_oauth"));
+            Globals.g_bot_chan = String.valueOf(p.getProperty("g_bot_chan"));
 
             // Close the inputstream object
             i.close();
 
-            logMsg("config.cfg" + " loaded succesfully!");
+            LogUtils.logMsg("config.cfg" + " loaded succesfully!");
         } catch (IOException e)
         {
-            logErr("Couldn't load the main configuration file, closing program...");
-            exit(1);
+            LogUtils.logErr("Couldn't load the main configuration file, closing program...");
+            GenUtils.exit(1);
         }
     }
 

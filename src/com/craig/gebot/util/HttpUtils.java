@@ -1,4 +1,4 @@
-package com.us.craig.gebot.util;
+package com.craig.gebot.util;
 
 /**
  * Created by craig on 04/10/2015.

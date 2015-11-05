@@ -1,15 +1,17 @@
-package com.us.craig.gebot;
+package com.craig.gebot;
 
-import static com.us.craig.gebot.util.Globals.*;
-import static com.us.craig.gebot.util.LogUtils.logMsg;
-import static com.us.craig.gebot.util.LogUtils.logErr;
-import static com.us.craig.gebot.util.GenUtils.exit;
-import com.us.craig.gebot.bot.TwitchChannel;
-import com.us.craig.gebot.bot.TwitchUser;
-import com.us.craig.gebot.bot.GeBot;
-import com.us.craig.gebot.util.ConfUtils;
-import com.us.craig.gebot.util.FileUtils;
-import com.us.craig.gebot.util.ScrapingUtils;
+import static com.craig.gebot.util.LogUtils.logMsg;
+import static com.craig.gebot.util.LogUtils.logErr;
+
+import com.craig.gebot.bot.TwitchChannel;
+import com.craig.gebot.util.FileUtils;
+import com.craig.gebot.util.GenUtils;
+import com.craig.gebot.util.Globals;
+import com.craig.gebot.util.LogUtils;
+import com.craig.gebot.bot.TwitchUser;
+import com.craig.gebot.bot.GeBot;
+import com.craig.gebot.util.ConfUtils;
+import com.craig.gebot.util.ScrapingUtils;
 
 public class Main
 {
@@ -59,7 +61,7 @@ public class Main
             init_time--;
             try
             {
-                logMsg("Waiting for twitch member/cmd/tag responses... " + init_time);
+                LogUtils.logMsg("Waiting for twitch member/cmd/tag responses... " + init_time);
                 Thread.sleep(1000);
             } catch (InterruptedException e)
             {
@@ -69,8 +71,8 @@ public class Main
 
         if (!twitchai.isInitialized())
         {
-            logErr("Failed com receive twitch member/cmd/tag permissions!");
-            exit(1);
+            LogUtils.logErr("Failed com receive twitch member/cmd/tag permissions!");
+            GenUtils.exit(1);
         }
 
         twitchai.init_channels();
@@ -81,7 +83,7 @@ public class Main
         while (twitchai.isConnected())
         {
             timeStart = System.nanoTime();
-            g_date.setTime(System.currentTimeMillis());
+            Globals.g_date.setTime(System.currentTimeMillis());
 
             for (TwitchChannel c : twitchai.getTwitchChannels())
             {
@@ -115,7 +117,7 @@ public class Main
                 }
                 else
                 {
-                    logErr("Warning! Main thread cycle time is longer than a second! Skipping sleep! Cycle-time: " + time);
+                    LogUtils.logErr("Warning! Main thread cycle time is longer than a second! Skipping sleep! Cycle-time: " + time);
                 }
             } catch (InterruptedException e)
             {

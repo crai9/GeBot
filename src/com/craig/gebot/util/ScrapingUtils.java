@@ -1,10 +1,8 @@
-package com.us.craig.gebot.util;
+package com.craig.gebot.util;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
 import org.jsoup.select.Elements;
-
-import java.io.IOException;
 
 /**
  * Created by craig on 19/10/2015.

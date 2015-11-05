@@ -1,8 +1,8 @@
-package com.us.craig.gebot.util;
+package com.craig.gebot.util;
 
-import static com.us.craig.gebot.util.GenUtils.*;
-import static com.us.craig.gebot.util.LogUtils.logMsg;
-import static com.us.craig.gebot.util.LogUtils.logErr;
+import static com.craig.gebot.util.LogUtils.logMsg;
+import static com.craig.gebot.util.LogUtils.logErr;
+import static com.craig.gebot.util.GenUtils.exit;
 
 import java.io.BufferedReader;
 import java.io.File;

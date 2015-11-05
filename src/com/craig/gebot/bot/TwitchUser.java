@@ -1,4 +1,4 @@
-package com.us.craig.gebot.bot;
+package com.craig.gebot.bot;
 
 public class TwitchUser
 {

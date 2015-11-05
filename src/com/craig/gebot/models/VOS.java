@@ -1,4 +1,4 @@
-package com.us.craig.gebot.models;
+package com.craig.gebot.models;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;

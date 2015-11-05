@@ -1,12 +1,12 @@
-package com.us.craig.gebot.models;
+package com.craig.gebot.models;
 
 /**
  * Created by craig on 08/10/2015.
  */
-public class Current {
+public class Day30 {
 
     private String trend;
-    private String price;
+    private String change;
 
     public String getTrend() {
         return trend;
@@ -16,12 +16,11 @@ public class Current {
         this.trend = trend;
     }
 
-    public String getPrice() {
-        return price;
+    public String getChange() {
+        return change;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setChange(String change) {
+        this.change = change;
     }
 }
-

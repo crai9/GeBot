@@ -1,9 +1,8 @@
-package com.us.craig.gebot.bot;
+package com.craig.gebot.bot;
 
-import com.us.craig.gebot.models.VOS;
-import com.us.craig.gebot.util.HttpUtils;
+import com.craig.gebot.util.HttpUtils;
+import com.craig.gebot.models.VOS;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
 import org.jsoup.Jsoup;
@@ -40,6 +39,14 @@ public class NewCommands {
                 TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
                 TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
         );
+    }
+
+    public static String getDebugInfo(){
+
+        String url = "http://checkip.amazonaws.com";
+
+        String ip = HttpUtils.getTextFromUrl(url);
+        return "Debug info, IP: " + ip;
     }
 
     public static String getActiveVos(){

@@ -1,20 +1,19 @@
-package com.us.craig.gebot.bot;
+package com.craig.gebot.bot;
 
-import static com.us.craig.gebot.util.Globals.*;
-import static com.us.craig.gebot.util.LogUtils.logMsg;
-import static com.us.craig.gebot.util.LogUtils.logErr;
-import static com.us.craig.gebot.util.GenUtils.exit;
-import static com.us.craig.gebot.util.PcUtils.getItemPc;
+import static com.craig.gebot.util.LogUtils.logMsg;
+import static com.craig.gebot.util.LogUtils.logErr;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.craig.gebot.util.*;
+import com.craig.gebot.util.LogUtils;
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 
-import com.us.craig.gebot.util.FileUtils;
+import com.craig.gebot.util.FileUtils;
 
 public class GeBot extends PircBot
 {
@@ -37,70 +36,70 @@ public class GeBot extends PircBot
         m_moderators = new ArrayList<TwitchUser>();
         m_channels = new ArrayList<TwitchChannel>();
 
-        setName(g_bot_name);
-        setVersion(g_lib_version);
+        setName(Globals.g_bot_name);
+        setVersion(Globals.g_lib_version);
         setVerbose(false);
     }
 
     public void init_twitch()
     {
-        logMsg("Loading all registered GeBot moderators...");
+        LogUtils.logMsg("Loading all registered GeBot moderators...");
         ArrayList<String> loadedModerators = FileUtils.readTextFile("data/moderators.txt");
         for (String m : loadedModerators)
         {
             String[] m_split = m.split(" ");
             TwitchUser newmod = new TwitchUser(m_split[0], m_split[1]);
-            logMsg("Added a GeBot moderator (" + newmod + ") to m_moderators");
+            LogUtils.logMsg("Added a GeBot moderator (" + newmod + ") to m_moderators");
             m_moderators.add(newmod);
         }
 
-        logMsg("Attempting to connect to irc.twitch.tv...");
+        LogUtils.logMsg("Attempting to connect to irc.twitch.tv...");
         try
         {
-            connect("irc.twitch.tv", 6667, g_bot_oauth);
+            connect("irc.twitch.tv", 6667, Globals.g_bot_oauth);
         } catch (IOException | IrcException e)
         {
-            logErr(e.getStackTrace().toString());
-            exit(1);
+            LogUtils.logErr(e.getStackTrace().toString());
+            GenUtils.exit(1);
         }
 
-        if (g_bot_reqMembership)
+        if (Globals.g_bot_reqMembership)
         {
-            logMsg("Requesting twitch membership capability for NAMES/JOIN/PART/MODE messages...");
-            sendRawLine(g_server_memreq);
+            LogUtils.logMsg("Requesting twitch membership capability for NAMES/JOIN/PART/MODE messages...");
+            sendRawLine(Globals.g_server_memreq);
         }
         else
         {
-            logMsg("Membership request is disabled!");
+            LogUtils.logMsg("Membership request is disabled!");
             m_hasMembership = true;
         }
 
-        if (g_bot_reqCommands)
+        if (Globals.g_bot_reqCommands)
         {
-            logMsg("Requesting twitch commands capability for NOTICE/HOSTTARGET/CLEARCHAT/USERSTATE messages... ");
-            sendRawLine(g_server_cmdreq);
+            LogUtils.logMsg("Requesting twitch commands capability for NOTICE/HOSTTARGET/CLEARCHAT/USERSTATE messages... ");
+            sendRawLine(Globals.g_server_cmdreq);
         }
         else
         {
-            logMsg("Commands request is disabled!");
+            LogUtils.logMsg("Commands request is disabled!");
             m_hasCommands = true;
         }
 
-        if (g_bot_reqTags)
+        if (Globals.g_bot_reqTags)
         {
-            logMsg("Requesting twitch tags capability for PRIVMSG/USERSTATE/GLOBALUSERSTATE messages... ");
-            sendRawLine(g_server_tagreq);
+            LogUtils.logMsg("Requesting twitch tags capability for PRIVMSG/USERSTATE/GLOBALUSERSTATE messages... ");
+            sendRawLine(Globals.g_server_tagreq);
         }
         else
         {
-            logMsg("Tags request is disabled!");
+            LogUtils.logMsg("Tags request is disabled!");
             m_hasTags = true;
         }
     }
 
     public void init_channels()
     {
-        logMsg("Attempting to join all registered channels...");
+        LogUtils.logMsg("Attempting to join all registered channels...");
         ArrayList<String> loadedChannels = FileUtils.readTextFile("data/channels.txt");
         for (String c : loadedChannels)
         {
@@ -114,14 +113,14 @@ public class GeBot extends PircBot
 
     public void joinToChannel(String channel)
     {
-        logMsg("Attempting to join channel " + channel);
+        LogUtils.logMsg("Attempting to join channel " + channel);
         joinChannel(channel);
         m_channels.add(new TwitchChannel(channel));
     }
 
     public void partFromChannel(String channel)
     {
-        logMsg("Attempting to part from channel " + channel);
+        LogUtils.logMsg("Attempting to part from channel " + channel);
         partChannel(channel);
         m_channels.remove(getTwitchChannel(channel));
     }
@@ -131,14 +130,14 @@ public class GeBot extends PircBot
         ArrayList<String> addchan_channels = FileUtils.readTextFile("data/channels.txt");
         if (addchan_channels.size() <= 0 || !addchan_channels.contains(addChan))
         {
-            logMsg("Joining a new channel: " + addChan);
+            LogUtils.logMsg("Joining a new channel: " + addChan);
             sendTwitchMessage(channel, "Joining channel: " + addChan);
             FileUtils.writeToTextFile("data/", "channels.txt", addChan);
             joinToChannel(addChan);
         }
         else
         {
-            logErr("Failed to join a new channel: " + addChan);
+            LogUtils.logErr("Failed to join a new channel: " + addChan);
             sendTwitchMessage(channel, "That channel is already registered!");
         }
         return;
@@ -148,10 +147,10 @@ public class GeBot extends PircBot
     {
         if (!Arrays.asList(getChannels()).contains(delChan))
         {
-            logErr("Can't delete channel " + delChan + " from the global channels list because it isn't in the joined channels list!");
+            LogUtils.logErr("Can't delete channel " + delChan + " from the global channels list because it isn't in the joined channels list!");
             return;
         }
-        logMsg(sender + " Leaving channel: " + delChan);
+        LogUtils.logMsg(sender + " Leaving channel: " + delChan);
         sendTwitchMessage(channel, sender + " Leaving channel: " + delChan);
         partFromChannel(delChan);
         FileUtils.removeFromTextFile("data", "/channels.txt", delChan);
@@ -160,11 +159,11 @@ public class GeBot extends PircBot
     public void sendTwitchMessage(String channel, String message)
     {
         TwitchChannel twitch_channel = getTwitchChannel(channel);
-        TwitchUser twitch_user = twitch_channel.getUser(g_bot_name);
+        TwitchUser twitch_user = twitch_channel.getUser(Globals.g_bot_name);
 
         if (twitch_user == null)
         {
-            twitch_user = g_nulluser;
+            twitch_user = Globals.g_nulluser;
         }
 
         if (twitch_user.isOperator())
@@ -173,11 +172,11 @@ public class GeBot extends PircBot
             {
                 twitch_channel.setCmdSent(twitch_channel.getCmdSent() + 1);
                 sendMessage(channel, message);
-                logMsg(channel + " | " + g_bot_name + " | " + message);
+                LogUtils.logMsg(channel + " | " + Globals.g_bot_name + " | " + message);
             }
             else
             {
-                logErr("Cannot send a message to channel (" + twitch_channel + ")! 100 Messages per 30s limit nearly exceeded! (" + twitch_channel.getCmdSent() + ")");
+                LogUtils.logErr("Cannot send a message to channel (" + twitch_channel + ")! 100 Messages per 30s limit nearly exceeded! (" + twitch_channel.getCmdSent() + ")");
             }
         }
         else
@@ -186,11 +185,11 @@ public class GeBot extends PircBot
             {
                 twitch_channel.setCmdSent(twitch_channel.getCmdSent() + 1);
                 sendMessage(channel, message);
-                logMsg(channel + " | " + g_bot_name + " | " + message);
+                LogUtils.logMsg(channel + " | " + Globals.g_bot_name + " | " + message);
             }
             else
             {
-                logErr("Cannot send a message to channel (" + twitch_channel + ")! 20 Messages per 30s limit nearly exceeded! (" + twitch_channel.getCmdSent() + ")");
+                LogUtils.logErr("Cannot send a message to channel (" + twitch_channel + ")! 20 Messages per 30s limit nearly exceeded! (" + twitch_channel.getCmdSent() + ")");
             }
         }
     }
@@ -204,17 +203,17 @@ public class GeBot extends PircBot
 
         if (!isInitialized())
         {
-            if (line.equals(g_server_memans))
+            if (line.equals(Globals.g_server_memans))
             {
                 m_hasMembership = true;
             }
 
-            if (line.equals(g_server_cmdans))
+            if (line.equals(Globals.g_server_cmdans))
             {
                 m_hasCommands = true;
             }
 
-            if (line.equals(g_server_tagans))
+            if (line.equals(Globals.g_server_tagans))
             {
                 m_hasTags = true;
             }
@@ -241,7 +240,7 @@ public class GeBot extends PircBot
 
         if (twitch_channel == null)
         {
-            logErr("Error on USERLIST, channel (" + channel + ") doesn't exist!");
+            LogUtils.logErr("Error on USERLIST, channel (" + channel + ") doesn't exist!");
             return;
         }
 
@@ -257,7 +256,7 @@ public class GeBot extends PircBot
                 }
                 TwitchUser user = new TwitchUser(u.getNick(), prefix);
                 twitch_channel.addUser(user);
-                logMsg("Adding new user (" + user + ") to channel (" + twitch_channel.toString() + ")");
+                LogUtils.logMsg("Adding new user (" + user + ") to channel (" + twitch_channel.toString() + ")");
             }
         }
     }
@@ -280,7 +279,7 @@ public class GeBot extends PircBot
             }
             TwitchUser user = new TwitchUser(sender, prefix);
             twitch_channel.addUser(user);
-            logMsg("Adding new user (" + user + ") to channel (" + twitch_channel.toString() + ")");
+            LogUtils.logMsg("Adding new user (" + user + ") to channel (" + twitch_channel.toString() + ")");
         }
     }
 
@@ -295,7 +294,7 @@ public class GeBot extends PircBot
         if (twitch_channel != null && twitch_user != null)
         {
             twitch_channel.delUser(twitch_user);
-            logMsg("Removing user (" + twitch_user + ") from channel (" + twitch_channel.toString() + ")");
+            LogUtils.logMsg("Removing user (" + twitch_user + ") from channel (" + twitch_channel.toString() + ")");
         }
     }
 
@@ -309,18 +308,18 @@ public class GeBot extends PircBot
 
         if (twitch_user == null)
         {
-            logErr("Error on MODE, cannot find (" + twitch_user + ") from channel (" + twitch_channel.toString() + ")");
+            LogUtils.logErr("Error on MODE, cannot find (" + twitch_user + ") from channel (" + twitch_channel.toString() + ")");
             return;
         }
 
         if (mode.equals("+o"))
         {
-            logMsg("Adding +o MODE for user (" + twitch_user + ") in channel (" + twitch_channel.toString() + ")");
+            LogUtils.logMsg("Adding +o MODE for user (" + twitch_user + ") in channel (" + twitch_channel.toString() + ")");
             twitch_user.addPrefixChar("@");
         }
         else if (mode.equals("-o"))
         {
-            logMsg("Adding -o MODE for user (" + twitch_user + ") in channel (" + twitch_channel.toString() + ")");
+            LogUtils.logMsg("Adding -o MODE for user (" + twitch_user + ") in channel (" + twitch_channel.toString() + ")");
             twitch_user.delPrefixChar("@");
         }
     }
@@ -328,7 +327,7 @@ public class GeBot extends PircBot
     @Override
     public void onMessage(String channel, String sender, String login, String hostname, String message)
     {
-        logMsg("data/channels/" + channel, "/onMessage", channel + " | " + sender + " | " + message);
+        LogUtils.logMsg("data/channels/" + channel, "/onMessage", channel + " | " + sender + " | " + message);
 
         TwitchChannel twitch_channel = getTwitchChannel(channel);
         TwitchUser twitch_user = twitch_channel.getUser(sender);
@@ -342,8 +341,8 @@ public class GeBot extends PircBot
 
             if (twitch_user == null)
             {
-                logErr("Error on ONMESSAGE, user (" + sender + ") doesn't exist! Creating a temp null user object for user!");
-                twitch_user = g_nulluser;
+                LogUtils.logErr("Error on ONMESSAGE, user (" + sender + ") doesn't exist! Creating a temp null user object for user!");
+                twitch_user = Globals.g_nulluser;
             }
 
 //            if (message.length() > 3)
@@ -382,18 +381,18 @@ public class GeBot extends PircBot
              * Commands available on the bot's own channel
              */
 
-            if (channel.equals(g_bot_chan))
+            if (channel.equals(Globals.g_bot_chan))
             {
                 switch (msg_command.toLowerCase())
                 {
                     case "help":
-                        sendTwitchMessage(channel, "List of available commands on this channel: " + g_commands_bot);
+                        sendTwitchMessage(channel, "List of available commands on this channel: " + Globals.g_commands_bot);
                         break;
                     case "join":
-                        addChannel(channel, g_bot_name, user_sender);
+                        addChannel(channel, Globals.g_bot_name, user_sender);
                         break;
                     case "leave":
-                        delChannel(channel, g_bot_name, user_sender);
+                        delChannel(channel, Globals.g_bot_name, user_sender);
                         break;
                 }
             }
@@ -409,13 +408,13 @@ public class GeBot extends PircBot
              * Normal channel user commands below
              */
                 case "help":
-                    String help_text = "List of available commands to you: " + g_commands_user;
+                    String help_text = "List of available commands to you: " + Globals.g_commands_user;
 
                     sendTwitchMessage(channel, help_text);
                     break;
 
                 case "date":
-                    sendTwitchMessage(channel, g_dateformat.format(g_date).replace('.','/'));
+                    sendTwitchMessage(channel, Globals.g_dateformat.format(Globals.g_date).replace('.','/'));
                     break;
 
                 case "time":
@@ -423,7 +422,7 @@ public class GeBot extends PircBot
                     break;
 
                 case "info":
-                    sendTwitchMessage(channel, g_bot_desc + g_bot_version);
+                    sendTwitchMessage(channel, Globals.g_bot_desc + Globals.g_bot_version);
                     break;
 
                 case "reset":
@@ -432,6 +431,10 @@ public class GeBot extends PircBot
 
                 case "warbands":
                     sendTwitchMessage(channel, NewCommands.getTimeTillWbs());
+                    break;
+
+                case "_debug":
+                    sendTwitchMessage(channel, NewCommands.getDebugInfo());
                     break;
 
                 case "runedate":
@@ -447,15 +450,15 @@ public class GeBot extends PircBot
                     break;
 
                 case "slots": // Half-assed simple slots game. :D
-                    int num1 = (int) (Math.random() * g_emotes_faces.length);
-                    int num2 = (int) (Math.random() * g_emotes_faces.length);
-                    int num3 = (int) (Math.random() * g_emotes_faces.length);
-                    String slots = g_emotes_faces[num1] + " | " + g_emotes_faces[num2] + " | " + g_emotes_faces[num3];
+                    int num1 = (int) (Math.random() * Globals.g_emotes_faces.length);
+                    int num2 = (int) (Math.random() * Globals.g_emotes_faces.length);
+                    int num3 = (int) (Math.random() * Globals.g_emotes_faces.length);
+                    String slots = Globals.g_emotes_faces[num1] + " | " + Globals.g_emotes_faces[num2] + " | " + Globals.g_emotes_faces[num3];
                     sendTwitchMessage(channel, slots);
                     if (num1 == num2 && num2 == num3)
                     {
                         sendTwitchMessage(channel, "And we have a new winner! " + sender + " Just got their name on the slots legends list!");
-                        FileUtils.writeToTextFile("data/", "slots.txt", g_datetimeformat.format(g_date) + " " + sender + ": " + slots);
+                        FileUtils.writeToTextFile("data/", "slots.txt", Globals.g_datetimeformat.format(Globals.g_date) + " " + sender + ": " + slots);
                     }
                     break;
 
@@ -476,7 +479,7 @@ public class GeBot extends PircBot
 
                     for (TwitchChannel c : m_channels)
                     {
-                        logMsg("Sending a broadcast message to channel (" + c + ") Message: " + broadcast_message);
+                        LogUtils.logMsg("Sending a broadcast message to channel (" + c + ") Message: " + broadcast_message);
                         sendTwitchMessage(c.getName(), "System broadcast message: " + broadcast_message);
                     }
                     break;
@@ -507,7 +510,7 @@ public class GeBot extends PircBot
                         break;
                     }
 
-                    String price = getItemPc(pcMessage);
+                    String price = PcUtils.getItemPc(pcMessage);
 
                     sendTwitchMessage(channel, "The price of " + pcMessage + " is: " + price + " gp.");
 
@@ -628,5 +631,4 @@ public class GeBot extends PircBot
     {
         return m_hasMembership & m_hasCommands & m_hasTags;
     }
-
 }
