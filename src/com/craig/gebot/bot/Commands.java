@@ -1,5 +1,6 @@
 package com.craig.gebot.bot;
 
+import static com.craig.gebot.util.TimeUtils.msToHMS;
 import com.craig.gebot.util.HttpUtils;
 import com.craig.gebot.models.VOS;
 import org.joda.time.DateTime;
@@ -22,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  * Created by craig on 20/10/2015.
  */
 
-public class NewCommands {
+public class Commands {
 
     public static void main(String[] args){
 
@@ -34,19 +35,15 @@ public class NewCommands {
 
         long millis = (25200 - ((new Date().getTime() / 1000 - 1376222417) % 25200)) * 1000;
 
-        return String.format("%02d hours, %02d min, %02d sec until next warbands.",
-                TimeUnit.MILLISECONDS.toHours(millis),
-                TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
-                TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
-        );
+        return msToHMS(millis) + " until warbands.";
     }
 
-    public static String getDebugInfo(){
+    public static String getDebugInfo(int channels){
 
         String url = "http://checkip.amazonaws.com";
 
         String ip = HttpUtils.getTextFromUrl(url);
-        return "Debug info, IP: " + ip;
+        return "Debug info, IP: " + ip + ", Channels: " + channels;
     }
 
     public static String getActiveVos(){
@@ -71,7 +68,7 @@ public class NewCommands {
     public static String getRuneDate(){
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
-        Date now = new Date();
+        DateTime now = new DateTime(DateTimeZone.UTC);
         Date start = new Date();
 
         try {
@@ -80,14 +77,11 @@ public class NewCommands {
             e.printStackTrace();
         }
 
-        long different = now.getTime() - start.getTime();
+        long difference = now.getMillis() - start.getTime();
 
-        long secondsInMilli = 1000;
-        long minutesInMilli = secondsInMilli * 60;
-        long hoursInMilli = minutesInMilli * 60;
-        long daysInMilli = hoursInMilli * 24;
+        long dayInMs = 3600000 * 24;
 
-        long elapsedDays = different / daysInMilli;
+        long elapsedDays = difference / dayInMs;
 
         return "The current runedate is: " + String.valueOf(elapsedDays) + ".";
 
@@ -98,11 +92,8 @@ public class NewCommands {
         DateTime now = DateTime.now( DateTimeZone.UTC );
         long millis = new Duration( now , now.plusDays( 1 ).withTimeAtStartOfDay() ).getMillis();
 
-        return String.format("%02d hours, %02d min, %02d sec until daily reset.",
-                TimeUnit.MILLISECONDS.toHours(millis),
-                TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
-                TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
-        );
+        return msToHMS(millis) + " until reset.";
+
     }
 
     public static String getRsTime(){

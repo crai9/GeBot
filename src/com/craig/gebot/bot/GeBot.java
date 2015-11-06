@@ -120,7 +120,7 @@ public class GeBot extends PircBot
 
     public void partFromChannel(String channel)
     {
-        LogUtils.logMsg("Attempting to part from channel " + channel);
+        LogUtils.logMsg("Attempting to leave channel " + channel);
         partChannel(channel);
         m_channels.remove(getTwitchChannel(channel));
     }
@@ -256,7 +256,7 @@ public class GeBot extends PircBot
                 }
                 TwitchUser user = new TwitchUser(u.getNick(), prefix);
                 twitch_channel.addUser(user);
-                LogUtils.logMsg("Adding new user (" + user + ") to channel (" + twitch_channel.toString() + ")");
+                LogUtils.logMsg("Adding (" + user.getName() + ") to (" + twitch_channel.getName() + ")");
             }
         }
     }
@@ -279,7 +279,7 @@ public class GeBot extends PircBot
             }
             TwitchUser user = new TwitchUser(sender, prefix);
             twitch_channel.addUser(user);
-            LogUtils.logMsg("Adding new user (" + user + ") to channel (" + twitch_channel.toString() + ")");
+            LogUtils.logMsg("Adding (" + user.getName() + ") to (" + twitch_channel.getName() + ")");
         }
     }
 
@@ -294,7 +294,7 @@ public class GeBot extends PircBot
         if (twitch_channel != null && twitch_user != null)
         {
             twitch_channel.delUser(twitch_user);
-            LogUtils.logMsg("Removing user (" + twitch_user + ") from channel (" + twitch_channel.toString() + ")");
+            LogUtils.logMsg("Removing (" + twitch_user.getName() + ") from (" + twitch_channel.getName() + ")");
         }
     }
 
@@ -341,7 +341,7 @@ public class GeBot extends PircBot
 
             if (twitch_user == null)
             {
-                LogUtils.logErr("Error on ONMESSAGE, user (" + sender + ") doesn't exist! Creating a temp null user object for user!");
+                LogUtils.logErr("Error, (" + sender + ") doesn't exist!");
                 twitch_user = Globals.g_nulluser;
             }
 
@@ -418,7 +418,7 @@ public class GeBot extends PircBot
                     break;
 
                 case "time":
-                    sendTwitchMessage(channel, NewCommands.getRsTime());
+                    sendTwitchMessage(channel, Commands.getRsTime());
                     break;
 
                 case "info":
@@ -426,27 +426,23 @@ public class GeBot extends PircBot
                     break;
 
                 case "reset":
-                    sendTwitchMessage(channel, NewCommands.getTimeTillReset());
+                    sendTwitchMessage(channel, Commands.getTimeTillReset());
                     break;
 
                 case "warbands":
-                    sendTwitchMessage(channel, NewCommands.getTimeTillWbs());
+                    sendTwitchMessage(channel, Commands.getTimeTillWbs());
                     break;
 
                 case "_debug":
-                    sendTwitchMessage(channel, NewCommands.getDebugInfo());
+                    sendTwitchMessage(channel, Commands.getDebugInfo(getTwitchChannels().size()));
                     break;
 
                 case "runedate":
-                    sendTwitchMessage(channel, NewCommands.getRuneDate());
+                    sendTwitchMessage(channel, Commands.getRuneDate());
                     break;
 
                 case "clear":
                     sendTwitchMessage(channel, "/clear");
-                    break;
-
-                case "channels":
-                    sendTwitchMessage(channel, "Registered channels: " + getTwitchChannels().size());
                     break;
 
                 case "slots": // Half-assed simple slots game. :D
@@ -485,7 +481,7 @@ public class GeBot extends PircBot
                     break;
                 case "vos":
 
-                    sendTwitchMessage(channel, NewCommands.getActiveVos());
+                    sendTwitchMessage(channel, Commands.getActiveVos());
 
                     break;
                 case "count":
@@ -498,7 +494,7 @@ public class GeBot extends PircBot
                         game = msg_array[1];
                     }
 
-                    sendTwitchMessage(channel, NewCommands.getPlayerCount(game));
+                    sendTwitchMessage(channel, Commands.getPlayerCount(game));
 
                     break;
                 case "pc":
