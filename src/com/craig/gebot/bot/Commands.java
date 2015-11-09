@@ -1,11 +1,15 @@
 package com.craig.gebot.bot;
 
 import static com.craig.gebot.util.TimeUtils.msToHMS;
+
+import com.craig.gebot.models.Araxxor;
 import com.craig.gebot.util.HttpUtils;
 import com.craig.gebot.models.VOS;
+import com.craig.gebot.util.TimeUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
+import org.joda.time.format.DateTimeFormat;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import com.google.gson.*;
@@ -27,7 +31,7 @@ public class Commands {
 
     public static void main(String[] args){
 
-        System.out.print(getRsTime());
+        System.out.print(getArraxorInfo());
 
     }
 
@@ -67,33 +71,25 @@ public class Commands {
 
     public static String getRuneDate(){
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
-        DateTime now = new DateTime(DateTimeZone.UTC);
-        Date start = new Date();
-
-        try {
-            start = simpleDateFormat.parse("27/2/2002 00:00:00");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        long difference = now.getMillis() - start.getTime();
-
-        long dayInMs = 3600000 * 24;
-
-        long elapsedDays = difference / dayInMs;
-
-        return "The current runedate is: " + String.valueOf(elapsedDays) + ".";
+        return "The current Runedate is: " + TimeUtils.daysSinceDate("27/11/2002 00:00:00") + ".";
 
     }
 
     public static String getTimeTillReset(){
 
-        DateTime now = DateTime.now( DateTimeZone.UTC );
-        long millis = new Duration( now , now.plusDays( 1 ).withTimeAtStartOfDay() ).getMillis();
+        DateTime now = DateTime.now(DateTimeZone.UTC);
+        long millis = new Duration(now, now.plusDays(1).withTimeAtStartOfDay()).getMillis();
 
         return msToHMS(millis) + " until reset.";
 
+    }
+
+    public static String getArraxorInfo(){
+
+        String addS = (Araxxor.getDaysTillPathChange() > 1) ? "s." : ".";
+
+        return "Open paths: " + Araxxor.getActivePaths() + ". Next open paths: "
+                + Araxxor.getNextPaths() + ", after " + Araxxor.getDaysTillPathChange() + " daily reset" + addS ;
     }
 
     public static String getRsTime(){

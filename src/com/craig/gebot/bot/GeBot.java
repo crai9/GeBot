@@ -441,6 +441,10 @@ public class GeBot extends PircBot
                     sendTwitchMessage(channel, Commands.getRuneDate());
                     break;
 
+                case "araxxor":
+                    sendTwitchMessage(channel, Commands.getArraxorInfo());
+                    break;
+
                 case "clear":
                     sendTwitchMessage(channel, "/clear");
                     break;

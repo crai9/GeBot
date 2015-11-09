@@ -23,8 +23,10 @@ Works best if given twitch moderator status. `/mod ge_bot`
 | `!warbands` | any | Returns the amount of time remaining until the next warband.| |
 | `!count` | any | Returns the amount of players playing a specified game. | `<both/rs3/07>` |
 | `!pc` | any | Returns the current Grand Exchange price for an item. | `<item name>` |
-| `!vos` | any | Returns the current Voice of Seren (usually).| |
-| `!slots` | any | Rolls three random twitch emotes.| |
+| `!vos` | any | Returns the current Voice of Seren (usually). | |
+| `!araxxor` | any | Returns details about Araxxor's open paths. | |
+| `!vorago` | any | Returns the current Vorago rotation. (Coming soon) | |
+| `!slots` | any | Rolls three random twitch emotes. | |
 
 =========
 
