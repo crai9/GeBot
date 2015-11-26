@@ -17,11 +17,10 @@ public class Araxxor {
         System.out.print("Active Paths: " + getActivePaths() + "\nIn " + getDaysTillPathChange() + " daily resets active paths will be: " + getNextPaths() );
     }
 
-    public static int getDaysTillPathChange() {
+    public static double getDaysTillPathChange() {
 
-        daysTillPathChange = (int) TimeUtils.daysSinceDate("05/08/2015 00:00:00"); //days since a path 2/3
-
-        return (daysTillPathChange % 4) + 1;
+        double daysSincePathChange = (double) TimeUtils.daysSinceDate("06/08/2015 00:00:00"); //days since a path 2/3
+        return 4 - (daysSincePathChange % 4);
     }
 
     public static void setDaysTillPathChange(int daysTillPathChange) {
@@ -30,7 +29,7 @@ public class Araxxor {
 
     public static String getActivePaths() {
 
-        int days = (getDaysTillPathChange() % 12) + 1; //days till a 2/3?
+        int days = (int) TimeUtils.daysSinceDate("06/08/2015 00:00:00") % 12; //days till a 2/3?
 
         if(days <= 4){
             activePaths = "Spider minions & Acid pool";
@@ -47,7 +46,7 @@ public class Araxxor {
 
     public static String getNextPaths() {
 
-        int days = (getDaysTillPathChange() % 12) + 1; //days till a 2/3?
+        int days = (int) TimeUtils.daysSinceDate("06/08/2015 00:00:00") % 12; //days till a 2/3?
 
         if(days <= 4){
             nextPaths = "Darkness & Acid pool";

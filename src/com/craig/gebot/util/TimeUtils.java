@@ -17,18 +17,20 @@ public class TimeUtils {
         System.out.println(daysSinceDate("06/11/2015 00:00:00"));
     }
 
-    public static long daysSinceDate(String startDate) {
+    public static double daysSinceDate(String startDate) {
 
-        DateTime now = new DateTime(DateTimeZone.UTC);
+        //DateTime now = new DateTime(DateTimeZone.UTC);
+        DateTime now = DateTime.parse("06/11/2015 00:00:00", DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss"));
 
         DateTime dt = DateTime.parse(startDate, DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss"));
         DateTime start = new LocalDateTime(dt).toDateTime(DateTimeZone.UTC);
 
         long difference = now.getMillis() - start.getMillis();
-
         long dayInMs = 3600000 * 24;
 
-        return difference / dayInMs;
+        double days = (double) difference / dayInMs;
+
+        return days;
 
     }
     public static String msToHMS(long millis){

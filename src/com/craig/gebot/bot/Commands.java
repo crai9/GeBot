@@ -3,13 +3,15 @@ package com.craig.gebot.bot;
 import static com.craig.gebot.util.TimeUtils.msToHMS;
 
 import com.craig.gebot.models.Araxxor;
+import com.craig.gebot.models.Details;
+import com.craig.gebot.models.Holder;
 import com.craig.gebot.util.HttpUtils;
 import com.craig.gebot.models.VOS;
+import com.craig.gebot.util.LogUtils;
 import com.craig.gebot.util.TimeUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
-import org.joda.time.format.DateTimeFormat;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import com.google.gson.*;
@@ -17,11 +19,9 @@ import com.google.gson.*;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by craig on 20/10/2015.
@@ -31,7 +31,7 @@ public class Commands {
 
     public static void main(String[] args){
 
-        System.out.print(getArraxorInfo());
+        System.out.print(getPlayerDetails("title", "Scottish"));
 
     }
 
@@ -71,7 +71,7 @@ public class Commands {
 
     public static String getRuneDate(){
 
-        return "The current Runedate is: " + TimeUtils.daysSinceDate("27/11/2002 00:00:00") + ".";
+        return "The current Runedate is: " + (long) TimeUtils.daysSinceDate("27/02/2002 00:00:00") + ".";
 
     }
 
@@ -89,7 +89,7 @@ public class Commands {
         String addS = (Araxxor.getDaysTillPathChange() > 1) ? "s." : ".";
 
         return "Open paths: " + Araxxor.getActivePaths() + ". Next open paths: "
-                + Araxxor.getNextPaths() + ", after " + Araxxor.getDaysTillPathChange() + " daily reset" + addS ;
+                + Araxxor.getNextPaths() + ", after " +  (int) Math.ceil(Araxxor.getDaysTillPathChange()) + " daily reset" + addS ;
     }
 
     public static String getRsTime(){
@@ -98,6 +98,40 @@ public class Commands {
         final SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         return "RS time is: " + sdf.format(currentTime) + ".";
+
+    }
+
+    public static String getPlayerDetails(String key, String rsn){
+
+
+
+        String apiUrl = "http://services.runescape.com/m=website-data/playerDetails.ws?names=%5B%22" + rsn + "%22%5D&callback=jQuery000000000000000_0000000000&_=0";
+        LogUtils.logMsg(apiUrl);
+        String response = HttpUtils.getTextFromUrl(apiUrl);
+        String text = response.split("\\]")[0].split("\\[")[1];
+        LogUtils.logMsg(text);
+        Gson gson = new Gson();
+
+        Details d = gson.fromJson(text, Details.class);
+
+        switch (key){
+
+            case "clan":
+                if(!d.getClan().equals(null)) {
+                    return d.getClan() + ", recruiting: " + d.getRecruiting();
+                } else {
+                    return "Player not in a clan.";
+                }
+            case "title":
+                if(d.getIsSuffix().equals("true")){
+                    return d.getName() + " " + d.getTitle();
+                } else {
+                    return d.getTitle() + " " + d.getName();
+                }
+
+            default:
+                return "nothing";
+        }
 
     }
 
@@ -133,7 +167,7 @@ public class Commands {
 
                 output = "07 player count: " + NumberFormat.getInstance(Locale.US).format(count);
                 break;
-            case "both":
+            case "":
                 String response2 = HttpUtils.getTextFromUrl(apiUrl);
                 count = Integer.parseInt(response2.split("\\)")[0].split("\\(")[1]);
 

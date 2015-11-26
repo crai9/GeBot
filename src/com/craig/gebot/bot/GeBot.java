@@ -515,6 +515,41 @@ public class GeBot extends PircBot
                     sendTwitchMessage(channel, "The price of " + pcMessage + " is: " + price + " gp.");
 
                     break;
+
+                case "title":
+
+                    if(msg_array.length <= 1){
+                        sendTwitchMessage(channel, "Usage: !title <rsn>");
+                        break;
+                    }
+
+                    String title = Commands.getPlayerDetails("title", msg_array[1]);
+
+                    sendTwitchMessage(channel, title + ".");
+
+                    break;
+
+                case "clan":
+
+                    if(msg_array.length <= 1){
+                        sendTwitchMessage(channel, "Usage: !clan <rsn>");
+                        break;
+                    }
+
+                    String clan = Commands.getPlayerDetails("clan", msg_array[1]);
+
+                    sendTwitchMessage(channel, clan + ".");
+
+                    break;
+                case "shutdown":
+                    LogUtils.logMsg(sender);
+                    if(sender.equals("cr___")){
+                        sendTwitchMessage(channel, sender + " -> shutting down GeBot.");
+                        GenUtils.exit(0);
+                    }
+
+                    break;
+
             }
 
             //timeEnd = System.nanoTime();
